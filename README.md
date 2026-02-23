@@ -20,13 +20,32 @@ datium-assessment/
 
 ## Setup
 
+### 1. Add the data files
+
+The data files are not tracked in git. Place them manually before running the notebook:
+
+```
+datium-assessment/
+└── data/
+    ├── train.rpt   ← put this file here
+    └── test.rpt    ← put this file here
+```
+
+If the `data/` directory doesn't exist yet, create it first:
+
+```bash
+mkdir -p data
+```
+
+### 2. Install dependencies
+
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Running the Notebooks
+### 3. Run the notebook
 
 ```bash
 jupyter notebook notebooks/01_eda_and_modelling.ipynb
