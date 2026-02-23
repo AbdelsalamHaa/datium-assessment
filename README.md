@@ -9,7 +9,7 @@ datium-assessment/
 │   └── test.rpt           # 11,487 records (Sold_Amount present for evaluation)
 ├── notebooks/
 │   ├── 01_eda_and_modelling.ipynb    # Section A – price prediction
-│   └── 02_section_b_visual_analysis.ipynb  # Section B – image analysis design
+│   └── 02_section_b_visual_analysis.md     # Section B – image analysis design report
 ├── src/
 │   └── trainer.py         # VehiclePriceTrainer class with MLflow tracking
 ├── models/                # Saved model artefacts (gitignored)
@@ -149,12 +149,14 @@ sMAPE is bounded and stable even when true values approach zero.
 
 ## Section B – Vehicle Image Analysis
 
-See `notebooks/02_section_b_visual_analysis.ipynb` for a full design report covering:
+See `notebooks/02_section_b_visual_analysis.md` for a full design report covering:
 - Problem framing and actionable output signals
-- Three modelling approaches (CNN classifier, YOLO detection, Vision-LLM zero-shot) with trade-offs
-- Recommended hybrid pipeline architecture
+- Three modelling approaches (CNN classifier, YOLOv11 detection, Vision-LLM zero-shot) with trade-offs
+- Recommended hybrid pipeline architecture (Mermaid diagram)
 - Evaluation strategy and business metrics
 - MVP implementation roadmap
+
+Vision models referenced: **GPT-5.2** (OpenAI, Dec 2025) and **Gemini 3.1 Pro** (Google, Feb 2026) for zero-shot approach; **YOLOv11** (Ultralytics) for object detection.
 
 ---
 
