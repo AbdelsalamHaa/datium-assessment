@@ -22,7 +22,6 @@ from sklearn.metrics import (
     mean_absolute_error,
     mean_squared_error,
     r2_score,
-    mean_absolute_percentage_error,
 )
 from sklearn.pipeline import Pipeline
 import joblib
@@ -40,13 +39,21 @@ BANNED_FEATURES = [
 TARGET = "Sold_Amount"
 
 
+def smape(y_true: np.ndarray, y_pred: np.ndarray) -> float:
+    """Symmetric MAPE — safe against zero/near-zero true values."""
+    denom = (np.abs(y_true) + np.abs(y_pred)) / 2.0
+    mask = denom != 0
+    result = np.where(mask, np.abs(y_true - y_pred) / denom, 0.0)
+    return float(np.mean(result) * 100)
+
+
 def regression_metrics(y_true: np.ndarray, y_pred: np.ndarray) -> dict[str, float]:
     """Return a dict of standard regression metrics."""
     mae = mean_absolute_error(y_true, y_pred)
     rmse = np.sqrt(mean_squared_error(y_true, y_pred))
     r2 = r2_score(y_true, y_pred)
-    mape = mean_absolute_percentage_error(y_true, y_pred)
-    return {"MAE": mae, "RMSE": rmse, "R2": r2, "MAPE": mape}
+    smape_val = smape(y_true, y_pred)
+    return {"MAE": mae, "RMSE": rmse, "R2": r2, "sMAPE": smape_val}
 
 
 class VehiclePriceTrainer:
@@ -137,9 +144,9 @@ class VehiclePriceTrainer:
                 for k, v in val_metrics.items():
                     mlflow.log_metric(f"val_{k}", round(v, 4))
                 logger.info(
-                    "Val  MAE=%.2f  RMSE=%.2f  R2=%.4f  MAPE=%.4f",
+                    "Val  MAE=%.2f  RMSE=%.2f  R2=%.4f  sMAPE=%.2f%%",
                     val_metrics["MAE"], val_metrics["RMSE"],
-                    val_metrics["R2"], val_metrics["MAPE"],
+                    val_metrics["R2"], val_metrics["sMAPE"],
                 )
 
             # ---------- persist model ----------
